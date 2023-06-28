@@ -5,6 +5,7 @@ class Program_Counter
 {
 public:
     int get() const;
+    int get_next() const;
     void set(int goal);
     // goal is address to jump, return the address to jump when prediction fails
     int branch(int goal);

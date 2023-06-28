@@ -5,6 +5,11 @@ int Program_Counter::get() const
     return counter;
 } 
 
+int Program_Counter::get_next() const
+{
+    return next_counter;
+}
+
 void Program_Counter::set(int goal)
 {
     next_counter = goal;
@@ -13,6 +18,7 @@ void Program_Counter::set(int goal)
 void Program_Counter::update()
 {
     counter = next_counter;
+    next_counter = counter + 4;
 }
 
 int Program_Counter::branch(int goal)

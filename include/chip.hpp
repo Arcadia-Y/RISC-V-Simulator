@@ -21,6 +21,7 @@ private:
         int status = -1; // -1 means available
         int data = 0;
     };
+    int ins, next_ins;
     Program_Counter pc;
     Reorder_Buffer rob;
     Load_Store_Buffer lsb;
@@ -31,6 +32,7 @@ private:
     std::unordered_map<int, unsigned char> ram;
     bool end_flag = false, clear_flag = false;
 
+    void fetch();
     void decode_and_issue();
     void decode(Reservation_Station::Entry& rs_entry, Reorder_Buffer::Entry& rob_entry);
     void write_back();

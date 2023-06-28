@@ -19,6 +19,11 @@ void Chip::read_ins()
             }
         }
     }
+    // load first instruction
+    ins = ram[0];
+    ins |= ((unsigned int)ram[1]) << 8;
+    ins |= ((unsigned int)ram[2]) << 16;
+    ins |= ((unsigned int)ram[3]) << 24;
 }
 
 int Chip::run()
@@ -46,7 +51,7 @@ int Chip::run()
             for (int i = 1; i < 32; i++)
                 next_reg[i].status = -1;
         }
-
+        fetch();
         update();
     }
     return ((unsigned int)reg[10].data) & 255u;
@@ -61,6 +66,14 @@ int Chip::sign_extend(int x, int digit)
     return x | high;
 }
 
+void Chip::fetch()
+{
+    next_ins = ram[pc.get_next()];
+    next_ins |= ((unsigned int)ram[pc.get_next()+1]) << 8;
+    next_ins |= ((unsigned int)ram[pc.get_next()+2]) << 16;
+    next_ins |= ((unsigned int)ram[pc.get_next()+3]) << 24;
+}
+
 void Chip::update()
 {
     rob.update();
@@ -70,6 +83,7 @@ void Chip::update()
         reg[i] = next_reg[i];
     cdb.clear();
     pc.update();
+    ins = next_ins;
 }
 
 void Chip::decode_and_issue()
@@ -222,11 +236,6 @@ void Chip::decode_and_issue()
 
 void Chip::decode(Reservation_Station::Entry& rs_entry, Reorder_Buffer::Entry& rob_entry)
 {
-    int ins = ram[pc.get()];
-    ins += ((unsigned int)ram[pc.get()+1]) << 8;
-    ins += ((unsigned int)ram[pc.get()+2]) << 16;
-    ins += ((unsigned int)ram[pc.get()+3]) << 24;
-    pc.set(pc.get()+4);
     if (ins == 0xff00513)
     {
         rs_entry.op = rob_entry.ins = end;
