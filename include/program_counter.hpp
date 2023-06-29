@@ -1,9 +1,12 @@
 #ifndef PC_HPP
 #define PC_HPP
 
+#include "myqueue.hpp"
+
 class Program_Counter
 {
 public:
+    Program_Counter();
     int get() const;
     int get_next() const;
     void set(int goal);
@@ -14,9 +17,14 @@ public:
     void update();
 
 private:
+    const static int hsize = 32;
+    bool last_predict;
     int counter = 0;
     int next_counter = 0;
-    int status = 2; // status for predicting jump, jump if >1
+    int status[hsize];
+    Myqueue<int, 8> history;
+    Myqueue<bool, 8> prediction;
+    unsigned int hash(unsigned int x);
 };
 
 #endif

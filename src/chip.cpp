@@ -149,6 +149,8 @@ void Chip::decode_and_issue()
         pc.set(pc.get());
         return;
     }
+    if (t == branch)
+        rob_entry.dest = pc.branch(pc.get()+rs_entry.a);
     int qj = rs_entry.qj, qk = rs_entry.qk;
     if (qj >= 0)
     {
@@ -289,7 +291,7 @@ void Chip::decode(Reservation_Station::Entry& rs_entry, Reorder_Buffer::Entry& r
         imm = sign_extend(imm, 13);
         rs_entry.qj = rs1;
         rs_entry.qk = rs2;
-        rob_entry.dest = pc.branch(pc.get() + imm);
+        rs_entry.a = imm;
         switch (func3)
         {
         case 0b000:

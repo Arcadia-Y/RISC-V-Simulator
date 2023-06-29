@@ -1,5 +1,11 @@
 #include "../include/program_counter.hpp"
 
+Program_Counter::Program_Counter()
+{
+    for (int i = 0; i < hsize; i++)
+        status[i] = 1;
+}
+
 int Program_Counter::get() const
 {
     return counter;
@@ -23,13 +29,17 @@ void Program_Counter::update()
 
 int Program_Counter::branch(int goal)
 {
-    if (status > 1)
+    int now = hash(counter) % hsize;
+    history.push(now);
+    if (status[now] > 1)
     {
+        prediction.push(true);
         next_counter = goal;
         return counter + 4;
     }
     else
     {
+        prediction.push(false);
         next_counter = counter + 4;
         return goal;
     }
@@ -37,16 +47,35 @@ int Program_Counter::branch(int goal)
 
 bool Program_Counter::verify(bool res)
 {
-    if (status > 1)
+    int now = *history.begin();
+    history.pop();   
+    if (status[now] > 1)
     {
-        status += res ? 1 : -1;
-        status = status > 3 ? 3 : status;
-        return res;
+        status[now] += res ? 1 : -1;
+        status[now] = status[now] > 3 ? 3 : status[now];
     }
     else
     {
-        status += res ? 1 : -1;
-        status = status < 0 ? 0 : status;
-        return !res;
+        status[now] += res ? 1 : -1;
+        status[now] = status[now] < 0 ? 0 : status[now];
     }
+    bool last_predict = *prediction.begin();
+    prediction.pop();
+    bool ret = last_predict == res;
+    if (!ret)
+    {
+        history.clear();
+        prediction.clear();
+    }
+    return ret;
+}
+
+unsigned int Program_Counter::hash(unsigned int x)
+{
+    x ^= 82589046;
+    x ^= x << 13;
+    x ^= x >> 7;
+    x ^= x << 17;
+    x ^= 82589046;
+    return x;
 }
