@@ -2,6 +2,7 @@
 #define PC_HPP
 
 #include "myqueue.hpp"
+#include <iostream>
 
 class Program_Counter
 {
@@ -15,10 +16,11 @@ public:
     // res is result of boolean exprssion, return if prediction is true 
     bool verify(bool res); 
     void update();
+    void count_success();
 
 private:
-    const static int hsize = 32;
-    bool last_predict;
+    const static int hsize = 64;
+    unsigned total = 0, success = 0;
     int counter = 0;
     int next_counter = 0;
     int status[hsize];

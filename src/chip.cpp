@@ -57,6 +57,11 @@ int Chip::run()
     return ((unsigned int)reg[10].data) & 255u;
 }
 
+void Chip::count_success()
+{
+    pc.count_success();
+}
+
 int Chip::sign_extend(int x, int digit)
 {
     int high = x >> (digit - 1);

@@ -13,6 +13,7 @@ public:
     Chip(): lsb(&cdb, &rob), alu(&cdb) {}
     int run();
     void read_ins();
+    void count_success();
 
 private:
     // control flow is implemented by function, so control unit is omitted

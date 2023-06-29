@@ -62,6 +62,8 @@ bool Program_Counter::verify(bool res)
     bool last_predict = *prediction.begin();
     prediction.pop();
     bool ret = last_predict == res;
+    ++total;
+    success += ret;
     if (!ret)
     {
         history.clear();
@@ -78,4 +80,12 @@ unsigned int Program_Counter::hash(unsigned int x)
     x ^= x << 17;
     x ^= 82589046;
     return x;
+}
+
+void Program_Counter::count_success()
+{
+    std::cout << "Total: " << total << '\n';
+    std::cout << "Success: " << success << '\n';
+    if (!total) total = 1;
+    std::cout << "Success Rate: " << (double) success / total * 100 << "%\n";
 }
