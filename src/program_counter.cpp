@@ -82,10 +82,12 @@ unsigned int Program_Counter::hash(unsigned int x)
     return x;
 }
 
-void Program_Counter::count_success()
+Prediction_Report Program_Counter::count_success()
 {
-    std::cout << "Total: " << total << '\n';
-    std::cout << "Success: " << success << '\n';
+    Prediction_Report info;
+    info.total = total;
+    info.success = success;
     if (!total) total = 1;
-    std::cout << "Success Rate: " << (double) success / total * 100 << "%\n";
+    info.rate = (double) success / total;
+    return info;
 }

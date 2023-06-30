@@ -4,6 +4,13 @@
 #include "myqueue.hpp"
 #include <iostream>
 
+struct Prediction_Report
+{
+    unsigned long total = 0;
+    unsigned long success = 0;
+    double rate;
+};
+
 class Program_Counter
 {
 public:
@@ -16,7 +23,7 @@ public:
     // res is result of boolean exprssion, return if prediction is true 
     bool verify(bool res); 
     void update();
-    void count_success();
+    Prediction_Report count_success();
 
 private:
     const static int hsize = 64;
