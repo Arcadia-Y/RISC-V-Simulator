@@ -1,0 +1,94 @@
+array_test1:
+Total: 22
+Success 11
+Rate: 50%
+
+array_test2:
+Total: 26
+Success 14
+Rate: 53.8462%
+
+basicopt1:
+Total: 155139
+Success 122056
+Rate: 78.6753%
+
+bulgarian:
+Total: 71493
+Success 67524
+Rate: 94.4484%
+
+expr:
+Total: 111
+Success 94
+Rate: 84.6847%
+
+gcd:
+Total: 120
+Success 70
+Rate: 58.3333%
+
+hanoi:
+Total: 17457
+Success 10667
+Rate: 61.1044%
+
+lvalue2:
+Total: 6
+Success 4
+Rate: 66.6667%
+
+magic:
+Total: 67869
+Success 53187
+Rate: 78.3671%
+
+manyarguments:
+Total: 10
+Success 7
+Rate: 70%
+
+multiarray:
+Total: 162
+Success 135
+Rate: 83.3333%
+
+naive:
+Total: 0
+Success 0
+Rate: 0%
+
+pi:
+Total: 39956380
+Success 32925340
+Rate: 82.4032%
+
+qsort:
+Total: 200045
+Success 172606
+Rate: 86.2836%
+
+queens:
+Total: 77116
+Success 56587
+Rate: 73.3791%
+
+statement_test:
+Total: 202
+Success 121
+Rate: 59.901%
+
+superloop:
+Total: 435027
+Success 406411
+Rate: 93.422%
+
+tak:
+Total: 60639
+Success 44755
+Rate: 73.8056%
+
+Allcases:
+Total: 41041824
+Success: 33859589
+Rate: 82.5002%

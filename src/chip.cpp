@@ -1,4 +1,7 @@
 #include "../include/chip.hpp"
+#include <random>
+#include <algorithm>
+#define RANDOM_ORDER
 
 void Chip::read_ins()
 {
@@ -28,6 +31,61 @@ void Chip::read_ins()
 
 int Chip::run()
 {
+    #ifdef RANDOM_ORDER
+    std::random_device rd;
+    std::mt19937 ram(rd());
+    while (!end_flag)
+    {
+        int number1[] = {0, 1, 2, 3};
+        std::shuffle(number1, number1+4, ram);
+        for (int i = 0; i < 4; i++)
+            switch (number1[i])
+            {
+            case 0:
+                decode_and_issue();
+                break;
+            case 1:
+                alu.execute();
+                break;
+            case 2:
+                lsb.execute();
+                break;
+            case 3:
+                commit();
+            }
+
+        // now cdb is updated
+        if (!clear_flag)
+        {
+            int number2[] = {0, 1, 2};
+            std::shuffle(number2, number2+3, ram);
+            for (int i = 0; i < 3; i++)
+                switch (number2[i])
+                {
+                case 0:
+                    alu.execute();
+                    break;
+                case 1:
+                    lsb.execute();
+                    break;
+                case 2:
+                    write_back();
+                }
+        }
+        else 
+        {
+            clear_flag = false;
+            alu.clear();
+            lsb.clear();
+            rob.clear();
+            for (int i = 1; i < 32; i++)
+                next_reg[i].status = -1;
+        }
+        fetch();
+        update();
+    }
+
+    #else
     while (!end_flag)
     {
         decode_and_issue();
@@ -54,6 +112,8 @@ int Chip::run()
         fetch();
         update();
     }
+    #endif
+
     return ((unsigned int)reg[10].data) & 255u;
 }
 
@@ -93,6 +153,7 @@ void Chip::update()
 
 void Chip::decode_and_issue()
 {
+    if (clear_flag) return;
     Reservation_Station::Entry rs_entry;
     Reorder_Buffer::Entry rob_entry;
     decode(rs_entry, rob_entry);

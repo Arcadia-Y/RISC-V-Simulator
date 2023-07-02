@@ -3,6 +3,7 @@
 
 int main()
 {
+    #ifdef COUNT_SUCCESS
     std::string testcases[] = {"array_test1", "array_test2", "basicopt1", "bulgarian",
         "expr", "gcd", "hanoi", "lvalue2", "magic", "manyarguments", "multiarray", 
         "naive", "pi", "qsort", "queens", "statement_test", "superloop", "tak"};
@@ -31,5 +32,12 @@ int main()
     std::cout << "Total: " << total << '\n';
     std::cout << "Success: " << success << '\n';
     std::cout << "Rate: " << (double) success / total * 100 << "%\n";
+
+    #else
+    Chip chip;
+    chip.read_ins();
+    std::cout << chip.run() << '\n';
+    #endif
+
     return 0;
 }

@@ -29,7 +29,7 @@ private:
     const static int hsize = 64;
     unsigned total = 0, success = 0;
     int counter = 0;
-    int next_counter = 0;
+    int next_counter = 4;
     int status[hsize];
     Myqueue<int, 8> history;
     Myqueue<bool, 8> prediction;
