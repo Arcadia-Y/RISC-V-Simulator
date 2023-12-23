@@ -1,12 +1,11 @@
 #include "../include/chip.hpp"
 #include <random>
 #include <algorithm>
-#define RANDOM_ORDER
 
 void Chip::read_ins()
 {
     std::string str;
-    int status = 0, address = 0;
+    int address = 0;
     while (!std::cin.eof())
     {
         std::cin >> str;
@@ -14,12 +13,8 @@ void Chip::read_ins()
             address = std::stoi(str.substr(1), 0, 16);
         else
         {
-            ram[address + status] = std::stoi(str, 0, 16);
-            if (++status == 4)
-            {
-                status = 0;
-                address += 4;
-            }
+            ram[address] = std::stoi(str, 0, 16);
+            address++;
         }
     }
     // load first instruction
